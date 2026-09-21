@@ -1,0 +1,1971 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti 💛</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background: #060906;
+            color: white;
+        }
+
+        /* =========================
+           FONDO
+        ========================= */
+
+        .sky {
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+
+            background:
+                radial-gradient(
+                    circle at 50% 42%,
+                    rgba(255, 214, 89, 0.22),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 20% 30%,
+                    rgba(255, 180, 55, 0.08),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #090d12 0%,
+                    #111917 43%,
+                    #192117 72%,
+                    #050705 100%
+                );
+        }
+
+        .moon {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            top: 8%;
+            right: 10%;
+
+            border-radius: 50%;
+
+            background: #fff1bd;
+
+            box-shadow:
+                0 0 30px rgba(255, 235, 150, 0.35),
+                0 0 90px rgba(255, 220, 100, 0.13);
+
+            opacity: 0.85;
+            z-index: -5;
+        }
+
+        .glow {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.13;
+            z-index: -4;
+        }
+
+        .glow-1 {
+            background: #eab62d;
+            left: -180px;
+            bottom: -140px;
+        }
+
+        .glow-2 {
+            background: #ffeaa1;
+            right: -180px;
+            top: 42%;
+        }
+
+        /* =========================
+           INTRO
+        ========================= */
+
+        #intro {
+            position: fixed;
+            inset: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #1a2019,
+                    #060806 75%
+                );
+
+            z-index: 1000;
+
+            opacity: 1;
+            visibility: visible;
+
+            transition:
+                opacity 1.4s ease,
+                visibility 1.4s ease;
+        }
+
+        #intro.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-content {
+            text-align: center;
+        }
+
+        .small-text {
+            margin-bottom: 18px;
+
+            font-size: 10px;
+            letter-spacing: 5px;
+            opacity: 0.6;
+        }
+
+        .intro-content h1 {
+            margin-bottom: 12px;
+
+            font-size: clamp(65px, 11vw, 125px);
+            font-weight: normal;
+
+            color: #f5d666;
+
+            text-shadow:
+                0 0 20px rgba(255, 216, 100, 0.3);
+        }
+
+        .intro-content p {
+            margin-bottom: 34px;
+
+            font-style: italic;
+            opacity: 0.65;
+        }
+
+        #startBtn {
+            border: 1px solid rgba(255, 220, 120, 0.55);
+            border-radius: 50px;
+
+            padding: 15px 30px;
+
+            background: rgba(255, 220, 120, 0.05);
+
+            color: #ffe9a3;
+
+            font-family: inherit;
+            font-size: 15px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        #startBtn:hover {
+            transform: translateY(-4px);
+
+            background:
+                rgba(255, 220, 120, 0.14);
+
+            box-shadow:
+                0 10px 35px rgba(255, 215, 100, 0.14);
+        }
+
+        /* =========================
+           ESCENA
+        ========================= */
+
+        #scene {
+            position: relative;
+
+            width: 100%;
+            height: 100vh;
+
+            opacity: 0;
+            transform: scale(0.96);
+
+            transition:
+                opacity 2s ease,
+                transform 2s ease;
+        }
+
+        #scene.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* =========================
+           ESTRELLAS
+        ========================= */
+
+        .star {
+            position: fixed;
+
+            width: 2px;
+            height: 2px;
+
+            border-radius: 50%;
+            background: white;
+
+            opacity: 0.4;
+
+            animation:
+                twinkle
+                var(--duration)
+                infinite
+                ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.15;
+                transform: scale(0.7);
+            }
+
+            50% {
+                opacity: 0.95;
+                transform: scale(1.6);
+            }
+        }
+
+        /* =========================
+           MENSAJE
+        ========================= */
+
+        .message {
+            position: absolute;
+
+            top: 6%;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            text-align: center;
+
+            z-index: 100;
+
+            opacity: 0;
+
+            transition:
+                opacity 2s ease,
+                transform 2s ease;
+        }
+
+        #scene.show .message {
+            opacity: 1;
+            transform:
+                translateX(-50%)
+                translateY(0);
+        }
+
+        .message span {
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.55;
+        }
+
+        .message h2 {
+            margin-top: 10px;
+
+            color: #fff4c9;
+
+            font-size: clamp(25px, 4vw, 48px);
+            font-weight: normal;
+            line-height: 1.08;
+
+            text-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* =========================
+           RAMO
+        ========================= */
+
+        .bouquet {
+            position: absolute;
+
+            left: 50%;
+            bottom: -30px;
+
+            width: min(900px, 95vw);
+            height: min(700px, 80vh);
+
+            transform:
+                translateX(-50%)
+                translateY(160px);
+
+            opacity: 0;
+
+            transition:
+                opacity 2s ease 0.3s,
+                transform 2s cubic-bezier(.16,1,.3,1) 0.3s;
+        }
+
+        #scene.show .bouquet {
+            opacity: 1;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+        }
+
+        /* =========================
+           TALLOS
+        ========================= */
+
+        .stems {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+        }
+
+        .stem {
+            position: absolute;
+
+            left: 50%;
+            bottom: 45px;
+
+            width: 6px;
+
+            border-radius: 100%;
+
+            transform-origin: bottom center;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #142411,
+                    #5c823b,
+                    #20371c
+                );
+
+            box-shadow:
+                2px 0 6px rgba(0, 0, 0, 0.35);
+        }
+
+        .s1 {
+            height: 430px;
+            transform: rotate(-32deg);
+        }
+
+        .s2 {
+            height: 490px;
+            transform: rotate(-24deg);
+        }
+
+        .s3 {
+            height: 520px;
+            transform: rotate(-15deg);
+        }
+
+        .s4 {
+            height: 550px;
+            transform: rotate(-7deg);
+        }
+
+        .s5 {
+            height: 550px;
+            transform: rotate(7deg);
+        }
+
+        .s6 {
+            height: 520px;
+            transform: rotate(15deg);
+        }
+
+        .s7 {
+            height: 490px;
+            transform: rotate(24deg);
+        }
+
+        .s8 {
+            height: 430px;
+            transform: rotate(32deg);
+        }
+
+        .s9 {
+            height: 580px;
+            transform: rotate(0deg);
+        }
+
+        /* =========================
+           HOJAS
+        ========================= */
+
+        .leaf {
+            position: absolute;
+
+            width: 82px;
+            height: 39px;
+
+            border-radius:
+                100% 0
+                100% 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7a984d,
+                    #203a1b
+                );
+
+            box-shadow:
+                inset 5px 3px 8px rgba(255,255,255,0.08),
+                0 4px 8px rgba(0,0,0,0.3);
+
+            z-index: 8;
+
+            animation:
+                leafMove
+                4s
+                infinite
+                ease-in-out;
+        }
+
+        .leaf::after {
+            content: "";
+
+            position: absolute;
+
+            width: 68px;
+            height: 1px;
+
+            left: 7px;
+            top: 19px;
+
+            background:
+                rgba(225, 240, 155, 0.3);
+        }
+
+        .l1 {
+            left: 18%;
+            bottom: 270px;
+            transform: rotate(28deg);
+        }
+
+        .l2 {
+            left: 27%;
+            bottom: 190px;
+            transform: rotate(-25deg);
+        }
+
+        .l3 {
+            left: 34%;
+            bottom: 350px;
+            transform: rotate(43deg);
+        }
+
+        .l4 {
+            left: 40%;
+            bottom: 235px;
+            transform: rotate(-32deg);
+        }
+
+        .l5 {
+            right: 18%;
+            bottom: 270px;
+            transform: scaleX(-1) rotate(28deg);
+        }
+
+        .l6 {
+            right: 27%;
+            bottom: 190px;
+            transform: scaleX(-1) rotate(-25deg);
+        }
+
+        .l7 {
+            right: 34%;
+            bottom: 350px;
+            transform: scaleX(-1) rotate(43deg);
+        }
+
+        .l8 {
+            right: 40%;
+            bottom: 235px;
+            transform: scaleX(-1) rotate(-32deg);
+        }
+
+        .l9 {
+            left: 17%;
+            bottom: 120px;
+            transform: rotate(-38deg) scale(.8);
+        }
+
+        .l10 {
+            right: 17%;
+            bottom: 120px;
+            transform: scaleX(-1) rotate(-38deg) scale(.8);
+        }
+
+        @keyframes leafMove {
+            0%,
+            100% {
+                margin-left: 0;
+            }
+
+            50% {
+                margin-left: 5px;
+            }
+        }
+
+        /* =========================
+           FLORES
+        ========================= */
+
+        .flowers {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+        }
+
+        .flower {
+            position: absolute;
+
+            width: 130px;
+            height: 130px;
+
+            transform-origin: center;
+
+            animation:
+                flowerSway
+                5s
+                infinite
+                ease-in-out;
+        }
+
+        .petal {
+            position: absolute;
+
+            width: 58px;
+            height: 90px;
+
+            left: 36px;
+            top: 18px;
+
+            border-radius:
+                60% 60%
+                50% 50%;
+
+            transform-origin: 50% 65%;
+
+            background:
+                radial-gradient(
+                    ellipse at 35% 25%,
+                    #fff5a8 0%,
+                    #ffd84c 35%,
+                    #e2a81e 82%
+                );
+
+            box-shadow:
+                inset -5px -8px 10px rgba(160, 90, 0, 0.15),
+                0 3px 8px rgba(0,0,0,0.25);
+        }
+
+        .p1 {
+            transform:
+                rotate(0deg)
+                translateY(-20px);
+        }
+
+        .p2 {
+            transform:
+                rotate(60deg)
+                translateY(-20px);
+        }
+
+        .p3 {
+            transform:
+                rotate(120deg)
+                translateY(-20px);
+        }
+
+        .p4 {
+            transform:
+                rotate(180deg)
+                translateY(-20px);
+        }
+
+        .p5 {
+            transform:
+                rotate(240deg)
+                translateY(-20px);
+        }
+
+        .p6 {
+            transform:
+                rotate(300deg)
+                translateY(-20px);
+        }
+
+        .center {
+            position: absolute;
+
+            left: 46px;
+            top: 46px;
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #fff29c,
+                    #c57c12 75%
+                );
+
+            box-shadow:
+                0 0 15px rgba(255,200,50,0.35);
+
+            z-index: 10;
+        }
+
+        .flower-1 {
+            left: 8%;
+            top: 33%;
+            transform: scale(.82) rotate(-17deg);
+        }
+
+        .flower-2 {
+            left: 21%;
+            top: 17%;
+            transform: scale(.72) rotate(-10deg);
+        }
+
+        .flower-3 {
+            left: 31%;
+            top: 5%;
+            transform: scale(.8) rotate(8deg);
+        }
+
+        .flower-4 {
+            left: 2%;
+            top: 51%;
+            transform: scale(.64) rotate(-20deg);
+        }
+
+        .flower-5 {
+            right: 8%;
+            top: 33%;
+            transform: scale(.82) rotate(17deg);
+        }
+
+        .flower-6 {
+            right: 21%;
+            top: 17%;
+            transform: scale(.72) rotate(10deg);
+        }
+
+        .flower-7 {
+            right: 31%;
+            top: 5%;
+            transform: scale(.8) rotate(-8deg);
+        }
+
+        @keyframes flowerSway {
+            0%,
+            100% {
+                margin-left: 0;
+                rotate: 0deg;
+            }
+
+            50% {
+                margin-left: 5px;
+                rotate: 2deg;
+            }
+        }
+
+        /* =========================
+           FLOR CENTRAL M
+        ========================= */
+
+        .special-flower {
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
+
+            left: 50%;
+            top: -3%;
+
+            transform:
+                translateX(-50%)
+                scale(1.12);
+
+            z-index: 50;
+
+            cursor: pointer;
+
+            animation:
+                specialFloat
+                5s
+                infinite
+                ease-in-out;
+        }
+
+        .special-flower .petal {
+            width: 90px;
+            height: 132px;
+
+            left: 70px;
+            top: 40px;
+
+            background:
+                radial-gradient(
+                    ellipse at 30% 20%,
+                    #fffbd0,
+                    #ffdd51 38%,
+                    #e5a31b 82%
+                );
+        }
+
+        .special-flower .p1 {
+            transform:
+                rotate(0deg)
+                translateY(-25px);
+        }
+
+        .special-flower .p2 {
+            transform:
+                rotate(45deg)
+                translateY(-25px);
+        }
+
+        .special-flower .p3 {
+            transform:
+                rotate(90deg)
+                translateY(-25px);
+        }
+
+        .special-flower .p4 {
+            transform:
+                rotate(135deg)
+                translateY(-25px);
+        }
+
+        .special-flower .p5 {
+            transform:
+                rotate(180deg)
+                translateY(-25px);
+        }
+
+        .special-flower .p6 {
+            transform:
+                rotate(225deg)
+                translateY(-25px);
+        }
+
+        .special-flower .p7 {
+            transform:
+                rotate(270deg)
+                translateY(-25px);
+        }
+
+        .special-flower .p8 {
+            transform:
+                rotate(315deg)
+                translateY(-25px);
+        }
+
+        .special-flower .inner {
+            width: 64px;
+            height: 98px;
+
+            left: 83px;
+            top: 65px;
+
+            background:
+                radial-gradient(
+                    ellipse at 30% 20%,
+                    #fffac6,
+                    #f8c936 60%,
+                    #d89416
+                );
+
+            z-index: 4;
+        }
+
+        .special-flower .i1 {
+            transform:
+                rotate(45deg)
+                translateY(-10px);
+        }
+
+        .special-flower .i2 {
+            transform:
+                rotate(135deg)
+                translateY(-10px);
+        }
+
+        .special-flower .i3 {
+            transform:
+                rotate(225deg)
+                translateY(-10px);
+        }
+
+        .special-flower .i4 {
+            transform:
+                rotate(315deg)
+                translateY(-10px);
+        }
+
+        .special-glow {
+            position: absolute;
+
+            width: 290px;
+            height: 290px;
+
+            left: -30px;
+            top: -30px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,220,80,0.20),
+                    transparent 67%
+                );
+
+            animation:
+                pulseGlow
+                3s
+                infinite;
+        }
+
+        .special-center {
+            position: absolute;
+
+            left: 76px;
+            top: 76px;
+
+            width: 78px;
+            height: 78px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #fff9bf,
+                    #e8ae24 70%
+                );
+
+            border:
+                3px solid rgba(255,239,150,0.7);
+
+            box-shadow:
+                0 0 25px rgba(255,215,70,0.5),
+                inset 0 0 15px rgba(150,80,0,0.15);
+
+            z-index: 60;
+
+            transition:
+                transform .4s ease,
+                box-shadow .4s ease;
+        }
+
+        .special-center span {
+            color: #61420c;
+
+            font-family: Georgia, serif;
+            font-size: 49px;
+            font-style: italic;
+
+            text-shadow:
+                0 1px 1px rgba(255,255,255,0.4);
+        }
+
+        .special-center:hover {
+            transform: scale(1.12);
+
+            box-shadow:
+                0 0 38px rgba(255,220,80,0.8);
+        }
+
+        .special-flower.clicked .special-center {
+            animation:
+                centerPulse
+                .65s
+                ease;
+        }
+
+        @keyframes centerPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes specialFloat {
+            0%,
+            100% {
+                transform:
+                    translateX(-50%)
+                    translateY(0)
+                    rotate(-1deg)
+                    scale(1.12);
+            }
+
+            50% {
+                transform:
+                    translateX(-50%)
+                    translateY(-8px)
+                    rotate(1deg)
+                    scale(1.15);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                transform: scale(.8);
+                opacity: .35;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: .8;
+            }
+        }
+
+        /* =========================
+           PAPEL
+        ========================= */
+
+        .wrapper-paper {
+            position: absolute;
+
+            left: 50%;
+            bottom: -20px;
+
+            width: 390px;
+            height: 270px;
+
+            transform:
+                translateX(-50%)
+                rotate(2deg);
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #eee5ca,
+                    #c8bea0
+                );
+
+            clip-path:
+                polygon(
+                    5% 0,
+                    95% 0,
+                    80% 100%,
+                    50% 80%,
+                    20% 100%
+                );
+
+            opacity: .92;
+
+            filter:
+                drop-shadow(
+                    0 12px 12px rgba(0,0,0,.35)
+                );
+
+            z-index: 70;
+        }
+
+        .wrapper-paper::before {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,.25),
+                    transparent
+                );
+
+            transform: skewX(-15deg);
+        }
+
+        /* =========================
+           CINTA
+        ========================= */
+
+        .ribbon {
+            position: absolute;
+
+            left: 50%;
+            bottom: 170px;
+
+            width: 135px;
+            height: 100px;
+
+            transform: translateX(-50%);
+
+            z-index: 90;
+        }
+
+        .ribbon-knot {
+            position: absolute;
+
+            left: 50%;
+            top: 16px;
+
+            width: 36px;
+            height: 36px;
+
+            transform: translateX(-50%);
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #fff2a0,
+                    #c99118
+                );
+
+            z-index: 5;
+        }
+
+        .ribbon-left,
+        .ribbon-right {
+            position: absolute;
+
+            top: 12px;
+
+            width: 67px;
+            height: 76px;
+
+            background:
+                linear-gradient(
+                    130deg,
+                    #f5d76c,
+                    #ad7510
+                );
+
+            clip-path:
+                polygon(
+                    100% 0,
+                    20% 10%,
+                    0 45%,
+                    35% 100%,
+                    65% 75%,
+                    100% 100%
+                );
+        }
+
+        .ribbon-left {
+            left: 3px;
+        }
+
+        .ribbon-right {
+            right: 3px;
+            transform: scaleX(-1);
+        }
+
+        /* =========================
+           PÉTALOS
+        ========================= */
+
+        .falling-petal {
+            position: fixed;
+
+            width: 12px;
+            height: 18px;
+
+            border-radius:
+                100% 0
+                100% 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff09b,
+                    #e9b332
+                );
+
+            pointer-events: none;
+            z-index: 500;
+
+            animation:
+                fall
+                var(--fall-time)
+                linear
+                forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform:
+                    translate3d(0,-30px,0)
+                    rotate(0deg);
+
+                opacity: 0;
+            }
+
+            10% {
+                opacity: .9;
+            }
+
+            50% {
+                transform:
+                    translate3d(
+                        var(--sway),
+                        50vh,
+                        0
+                    )
+                    rotate(180deg);
+            }
+
+            100% {
+                transform:
+                    translate3d(
+                        calc(var(--sway) * -1),
+                        110vh,
+                        0
+                    )
+                    rotate(420deg);
+
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           MARIPOSAS
+        ========================= */
+
+        .butterfly {
+            position: fixed;
+
+            width: 38px;
+            height: 30px;
+
+            pointer-events: none;
+
+            z-index: 450;
+        }
+
+        .butterfly::before,
+        .butterfly::after {
+            content: "";
+
+            position: absolute;
+
+            width: 19px;
+            height: 26px;
+
+            background:
+                radial-gradient(
+                    circle at 40% 40%,
+                    #fff1a8,
+                    #d8a329
+                );
+
+            border-radius:
+                80% 20%
+                80% 20%;
+
+            box-shadow:
+                0 0 10px rgba(255,210,70,.3);
+        }
+
+        .butterfly::before {
+            left: 0;
+
+            transform: rotate(-25deg);
+
+            animation:
+                wing
+                .45s
+                infinite
+                alternate;
+        }
+
+        .butterfly::after {
+            right: 0;
+
+            transform:
+                scaleX(-1)
+                rotate(-25deg);
+
+            animation:
+                wing
+                .45s
+                infinite
+                alternate;
+        }
+
+        @keyframes wing {
+            from {
+                transform:
+                    rotate(-25deg)
+                    scaleY(1);
+            }
+
+            to {
+                transform:
+                    rotate(-25deg)
+                    scaleY(.55);
+            }
+        }
+
+        /* =========================
+           PARTÍCULAS
+        ========================= */
+
+        .particle {
+            position: fixed;
+
+            border-radius: 50%;
+
+            background: #ffe98d;
+
+            pointer-events: none;
+
+            z-index: 700;
+
+            animation:
+                particleOut
+                1.3s
+                ease-out
+                forwards;
+        }
+
+        @keyframes particleOut {
+            from {
+                transform:
+                    translate(0,0)
+                    scale(1);
+
+                opacity: 1;
+            }
+
+            to {
+                transform:
+                    translate(
+                        var(--x),
+                        var(--y)
+                    )
+                    scale(0);
+
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           MENSAJE FINAL
+        ========================= */
+
+        .bottom-message {
+            position: absolute;
+
+            left: 50%;
+            bottom: 18px;
+
+            transform:
+                translateX(-50%)
+                translateY(15px);
+
+            color: #ffe9a5;
+
+            opacity: 0;
+
+            font-size: 12px;
+            letter-spacing: 2px;
+
+            white-space: nowrap;
+
+            z-index: 200;
+
+            transition:
+                opacity 2s ease 3s,
+                transform 2s ease 3s;
+        }
+
+        #scene.show .bottom-message {
+            opacity: .65;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+        }
+
+        .bottom-message span {
+            margin: 0 10px;
+            opacity: .5;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .moon {
+                width: 75px;
+                height: 75px;
+                right: 7%;
+                top: 7%;
+            }
+
+            .message {
+                top: 5%;
+            }
+
+            .message h2 {
+                font-size: 26px;
+            }
+
+            .bouquet {
+                width: 660px;
+                height: 610px;
+            }
+
+            .special-flower {
+                transform:
+                    translateX(-50%)
+                    scale(.83);
+            }
+
+            .wrapper-paper {
+                width: 320px;
+            }
+
+            .bottom-message {
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+        }
+
+        @media (max-height: 700px) {
+
+            .message {
+                top: 3%;
+            }
+
+            .bouquet {
+                height: 570px;
+            }
+
+            .bottom-message {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sky"></div>
+    <div class="moon"></div>
+
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <!-- INTRO -->
+    <div id="intro">
+        <div class="intro-content">
+            <div class="small-text">
+                NO PODRE DARTE LAS FLOREZ FISICAMENTE PERO...
+                TIENES UN HOMBRE QUE RESUELVE
+                
+            </div>
+
+            <h1>Para ti</h1>
+
+            <p>
+                Estas florez amarillas son mi humilde ofrenda,<br>
+                pues en ti encontre aquello que mi corazon siempre busco
+            </p>
+
+            <button id="startBtn">
+                Abrir el ramo ✦
+            </button>
+        </div>
+    </div>
+
+    <div id="stars"></div>
+    <div id="petals"></div>
+    <div id="butterflies"></div>
+    <div id="particles"></div>
+
+    <!-- ESCENA -->
+    <main id="scene">
+
+        <div class="message">
+            <span>Te amo, espero te guste, es simple pero con mucho amor </span>
+
+            <h2>
+                Con cariño para mi hermosa mujer 🌼
+            </h2>
+        </div>
+
+        <section class="bouquet" id="bouquet">
+
+            <!-- TALLOS -->
+            <div class="stems">
+                <div class="stem s1"></div>
+                <div class="stem s2"></div>
+                <div class="stem s3"></div>
+                <div class="stem s4"></div>
+                <div class="stem s5"></div>
+                <div class="stem s6"></div>
+                <div class="stem s7"></div>
+                <div class="stem s8"></div>
+                <div class="stem s9"></div>
+            </div>
+
+            <!-- HOJAS -->
+            <div class="leaves">
+                <div class="leaf l1"></div>
+                <div class="leaf l2"></div>
+                <div class="leaf l3"></div>
+                <div class="leaf l4"></div>
+                <div class="leaf l5"></div>
+                <div class="leaf l6"></div>
+                <div class="leaf l7"></div>
+                <div class="leaf l8"></div>
+                <div class="leaf l9"></div>
+                <div class="leaf l10"></div>
+            </div>
+
+            <!-- FLORES -->
+            <div class="flowers">
+
+                <div class="flower flower-1">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="center"></div>
+                </div>
+
+                <div class="flower flower-2">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="center"></div>
+                </div>
+
+                <div class="flower flower-3">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="center"></div>
+                </div>
+
+                <div class="flower flower-4">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="center"></div>
+                </div>
+
+                <div class="flower flower-5">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="center"></div>
+                </div>
+
+                <div class="flower flower-6">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="center"></div>
+                </div>
+
+                <div class="flower flower-7">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="center"></div>
+                </div>
+
+                <!-- FLOR PRINCIPAL -->
+                <div class="special-flower" id="specialFlower">
+
+                    <div class="special-glow"></div>
+
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="petal p4"></div>
+                    <div class="petal p5"></div>
+                    <div class="petal p6"></div>
+                    <div class="petal p7"></div>
+                    <div class="petal p8"></div>
+
+                    <div class="petal inner i1"></div>
+                    <div class="petal inner i2"></div>
+                    <div class="petal inner i3"></div>
+                    <div class="petal inner i4"></div>
+
+                    <div class="special-center">
+                        <span>M</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- PAPEL -->
+            <div class="wrapper-paper"></div>
+
+            <!-- CINTA -->
+            <div class="ribbon">
+                <div class="ribbon-knot"></div>
+                <div class="ribbon-left"></div>
+                <div class="ribbon-right"></div>
+            </div>
+
+        </section>
+
+        <div class="bottom-message">
+            <span>✦</span>
+            Hecho con un poquito de cariño
+            <span>✦</span>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const intro =
+                document.getElementById("intro");
+
+            const startBtn =
+                document.getElementById("startBtn");
+
+            const scene =
+                document.getElementById("scene");
+
+            const bouquet =
+                document.getElementById("bouquet");
+
+            const specialFlower =
+                document.getElementById("specialFlower");
+
+            const stars =
+                document.getElementById("stars");
+
+            const petals =
+                document.getElementById("petals");
+
+            const butterflies =
+                document.getElementById("butterflies");
+
+            const particles =
+                document.getElementById("particles");
+
+
+            /* =========================
+               ESTRELLAS
+            ========================= */
+
+            for (let i = 0; i < 100; i++) {
+
+                const star =
+                    document.createElement("div");
+
+                star.className = "star";
+
+                star.style.left =
+                    Math.random() * 100 + "%";
+
+                star.style.top =
+                    Math.random() * 75 + "%";
+
+                star.style.setProperty(
+                    "--duration",
+                    2 + Math.random() * 4 + "s"
+                );
+
+                star.style.animationDelay =
+                    Math.random() * 5 + "s";
+
+                stars.appendChild(star);
+            }
+
+
+            /* =========================
+               PÉTALOS
+            ========================= */
+
+            function createPetal() {
+
+                const petal =
+                    document.createElement("div");
+
+                petal.className =
+                    "falling-petal";
+
+                petal.style.left =
+                    Math.random() * 100 + "vw";
+
+                petal.style.setProperty(
+                    "--fall-time",
+                    5 + Math.random() * 6 + "s"
+                );
+
+                petal.style.setProperty(
+                    "--sway",
+                    -100 + Math.random() * 200 + "px"
+                );
+
+                petals.appendChild(petal);
+
+                setTimeout(function () {
+                    petal.remove();
+                }, 12000);
+            }
+
+
+            /* =========================
+               MARIPOSAS
+            ========================= */
+
+            function createButterfly() {
+
+                const butterfly =
+                    document.createElement("div");
+
+                butterfly.className =
+                    "butterfly";
+
+                const fromLeft =
+                    Math.random() > 0.5;
+
+                const startY =
+                    20 + Math.random() * 55;
+
+                const duration =
+                    7000 + Math.random() * 5000;
+
+                const startX =
+                    fromLeft
+                        ? -60
+                        : window.innerWidth + 60;
+
+                const endX =
+                    fromLeft
+                        ? window.innerWidth + 60
+                        : -60;
+
+                const startTime =
+                    performance.now();
+
+                butterfly.style.top =
+                    startY + "vh";
+
+                butterflies.appendChild(
+                    butterfly
+                );
+
+                function moveButterfly(time) {
+
+                    const elapsed =
+                        time - startTime;
+
+                    const progress =
+                        elapsed / duration;
+
+                    if (progress >= 1) {
+
+                        butterfly.remove();
+
+                        return;
+                    }
+
+                    const x =
+                        startX +
+                        (endX - startX) *
+                        progress;
+
+                    const baseY =
+                        window.innerHeight *
+                        (startY / 100);
+
+                    const wave =
+                        Math.sin(
+                            progress *
+                            Math.PI *
+                            4
+                        ) * 70;
+
+                    const y =
+                        baseY + wave;
+
+                    butterfly.style.transform =
+                        "translate(" +
+                        x +
+                        "px, " +
+                        (y - baseY) +
+                        "px)";
+
+                    requestAnimationFrame(
+                        moveButterfly
+                    );
+                }
+
+                requestAnimationFrame(
+                    moveButterfly
+                );
+            }
+
+
+            /* =========================
+               PARTÍCULAS
+            ========================= */
+
+            function createBurst(x, y) {
+
+                for (let i = 0; i < 50; i++) {
+
+                    const particle =
+                        document.createElement(
+                            "div"
+                        );
+
+                    particle.className =
+                        "particle";
+
+                    particle.style.left =
+                        x + "px";
+
+                    particle.style.top =
+                        y + "px";
+
+                    const angle =
+                        Math.random() *
+                        Math.PI * 2;
+
+                    const distance =
+                        70 +
+                        Math.random() *
+                        180;
+
+                    particle.style.width =
+                        2 +
+                        Math.random() *
+                        5 +
+                        "px";
+
+                    particle.style.height =
+                        particle.style.width;
+
+                    particle.style.setProperty(
+                        "--x",
+                        Math.cos(angle) *
+                        distance +
+                        "px"
+                    );
+
+                    particle.style.setProperty(
+                        "--y",
+                        Math.sin(angle) *
+                        distance +
+                        "px"
+                    );
+
+                    particles.appendChild(
+                        particle
+                    );
+
+                    setTimeout(function () {
+                        particle.remove();
+                    }, 1400);
+                }
+            }
+
+
+            /* =========================
+               ABRIR RAMO
+            ========================= */
+
+            startBtn.addEventListener(
+                "click",
+                function () {
+
+                    intro.classList.add("hide");
+
+                    scene.classList.add("show");
+
+                    for (let i = 0; i < 25; i++) {
+
+                        setTimeout(
+                            createPetal,
+                            i * 130
+                        );
+                    }
+
+                    setTimeout(
+                        createButterfly,
+                        1200
+                    );
+
+                    setTimeout(
+                        createButterfly,
+                        2500
+                    );
+
+                    setTimeout(
+                        createButterfly,
+                        4000
+                    );
+                }
+            );
+
+
+            /* =========================
+               CLIC EN M
+            ========================= */
+
+            specialFlower.addEventListener(
+                "click",
+                function () {
+
+                    const rect =
+                        specialFlower.getBoundingClientRect();
+
+                    const x =
+                        rect.left +
+                        rect.width / 2;
+
+                    const y =
+                        rect.top +
+                        rect.height / 2;
+
+                    specialFlower.classList.add(
+                        "clicked"
+                    );
+
+                    createBurst(x, y);
+
+                    for (let i = 0; i < 15; i++) {
+
+                        setTimeout(
+                            createPetal,
+                            i * 60
+                        );
+                    }
+
+                    setTimeout(
+                        function () {
+                            specialFlower.classList.remove(
+                                "clicked"
+                            );
+                        },
+                        700
+                    );
+                }
+            );
+
+
+            /* =========================
+               MOVIMIENTO CON RATÓN
+            ========================= */
+
+            document.addEventListener(
+                "mousemove",
+                function (event) {
+
+                    const mouseX =
+                        event.clientX /
+                        window.innerWidth -
+                        0.5;
+
+                    const mouseY =
+                        event.clientY /
+                        window.innerHeight -
+                        0.5;
+
+                    bouquet.style.marginLeft =
+                        mouseX * 12 + "px";
+
+                    bouquet.style.marginTop =
+                        mouseY * 7 + "px";
+                }
+            );
+
+
+            /* =========================
+               ANIMACIONES CONTINUAS
+            ========================= */
+
+            setInterval(
+                createPetal,
+                1000
+            );
+
+            setInterval(
+                createButterfly,
+                6500
+            );
+
+        });
+    </script>
+
+</body>
+</html>
+```
